@@ -1,6 +1,6 @@
 import "./styles/App.css"
 import { Routes, Route } from "react-router-dom"
-import Dashboard from "./components/Dashboard/Dashboard"
+import Dashboard from "./components/Dashboard/dashboard"
 import { ThemeProvider } from "./components/theme-provider"
 
 function App() {
