@@ -1,20 +1,14 @@
-import type { ColumnDef } from "@tanstack/react-table"
-import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table"
+import type { ColumnDef, SortingState } from "@tanstack/react-table"
+import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { cn } from "@/lib/utils"
 
 type Props<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
@@ -23,29 +17,47 @@ type Props<TData, TValue> = {
 
 const PAGE_SIZE_OPTIONS = [10, 30, 50, 100] as const
 
+const COLUMN_WIDTHS: Record<string, number> = {
+  name: 180,
+  email: 280,
+  role: 140,
+  status: 140,
+  createdAt: 140,
+}
+
 export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([])
   const table = useReactTable({
     data,
     columns,
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: { sorting },
     initialState: { pagination: { pageSize: 10 } },
   })
 
   const pageIndex = table.getState().pagination.pageIndex
   const pageCount = table.getPageCount()
   const pageSize = table.getState().pagination.pageSize
+  const canPrev = table.getCanPreviousPage()
+  const canNext = table.getCanNextPage()
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">
       <ScrollArea className="h-full flex-1 min-h-0 rounded-md border border-border">
         <div className="p-2">
-          <Table>
+          <Table className="table-fixed">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="sticky top-0 z-10 bg-background">
+                    <TableHead
+                      key={header.id}
+                      style={COLUMN_WIDTHS[header.column.id] ? { width: COLUMN_WIDTHS[header.column.id] } : undefined}
+                      className={cn("sticky top-0 z-10 bg-background", header.column.id === "email" && "pr-4")}
+                    >
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   ))}
@@ -58,7 +70,9 @@ export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      <TableCell key={cell.id} style={COLUMN_WIDTHS[cell.column.id] ? { width: COLUMN_WIDTHS[cell.column.id] } : undefined} className="max-w-0 truncate">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))
@@ -101,16 +115,19 @@ export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>
           </DropdownMenu>
         </div>
 
-        <Pagination>
+        <Pagination className="ml-auto mr-0 w-fit">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
+                href="#"
                 onClick={(e) => {
                   e.preventDefault()
+                  if (!canPrev) return
                   table.previousPage()
                 }}
-                aria-disabled={!table.getCanPreviousPage()}
-                className={!table.getCanPreviousPage() ? "pointer-events-none opacity-50" : ""}
+                aria-disabled={!canPrev}
+                tabIndex={canPrev ? 0 : -1}
+                className={canPrev ? "cursor-pointer" : "cursor-not-allowed opacity-50"}
               />
             </PaginationItem>
 
@@ -122,12 +139,15 @@ export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>
 
             <PaginationItem>
               <PaginationNext
+                href="#"
                 onClick={(e) => {
                   e.preventDefault()
+                  if (!canNext) return
                   table.nextPage()
                 }}
-                aria-disabled={!table.getCanNextPage()}
-                className={!table.getCanNextPage() ? "pointer-events-none opacity-50" : ""}
+                aria-disabled={!canNext}
+                tabIndex={canNext ? 0 : -1}
+                className={canNext ? "cursor-pointer" : "cursor-not-allowed opacity-50"}
               />
             </PaginationItem>
           </PaginationContent>

@@ -69,15 +69,10 @@ export default function DataTablePage() {
             <SidebarTrigger />
             <div>
               <h1 className="text-xl font-semibold text-foreground">Data Table</h1>
-              <p className="text-sm text-muted-foreground">Example table with pagination, scroll area, and add form.</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            {/* <Button variant="outline" size="sm">
-              <Download className="mr-2 h-4 w-4" />
-              Export
-            </Button> */}
             <AddRowSheet onAddRow={handleAddRow} />
           </div>
         </header>
@@ -86,9 +81,7 @@ export default function DataTablePage() {
           <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name, email, role, status..." />
         </div>
 
-        <div className="flex-1 min-h-0">
-          {loading ? <DataTableSkeleton /> : <DataTable columns={columns} data={filtered} />}
-        </div>
+        <div className="flex-1 min-h-0">{loading ? <DataTableSkeleton /> : <DataTable columns={columns} data={filtered} />}</div>
       </main>
     </SidebarProvider>
   )
