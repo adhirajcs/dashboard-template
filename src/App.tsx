@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom"
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/theme-provider"
 import DataTablePage from "@/components/DataTable/DataTablePage"
-import Dashboard from "@/components/Dashboard/dashboard"
+import Dashboard from "@/components/Dashboard/Dashboard"
 
 function App() {
   return (
