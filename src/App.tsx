@@ -1,7 +1,10 @@
 import "./styles/App.css"
 import { Routes, Route } from "react-router-dom"
-import Dashboard from "./components/Dashboard/dashboard"
-import { ThemeProvider } from "./components/theme-provider"
+
+import { Toaster } from "@/components/ui/sonner"
+import { ThemeProvider } from "@/components/theme-provider"
+import DataTablePage from "@/components/DataTable/DataTablePage"
+import Dashboard from "@/components/Dashboard/dashboard"
 
 function App() {
   return (
@@ -9,7 +12,10 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/data-table" element={<DataTablePage />} />
         </Routes>
+
+        <Toaster />
       </ThemeProvider>
     </>
   )

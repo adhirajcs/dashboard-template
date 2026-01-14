@@ -1,19 +1,21 @@
-import { Home, LogOut, Bell, User, ChevronsUpDown, Sun, Moon, Monitor, ChevronDown, MessageCircle, ThumbsUp, BarChart3, FileText, Users, Settings } from "lucide-react"
+import { Link, useLocation } from "react-router-dom"
+import { BarChart3, Bell, ChevronDown, ChevronsUpDown, FileText, Home, LogOut, MessageCircle, Settings, ThumbsUp, User, Users } from "lucide-react"
+
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/components/theme-provider"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
 // Menu items.
 const items = [
   {
     title: "Dashboard",
-    url: "",
+    url: "/",
     icon: Home,
   },
   {
     title: "Data Table",
-    url: "#",
+    url: "/data-table",
     icon: FileText,
   },
   {
@@ -35,6 +37,8 @@ const items = [
 
 const AppSidebar = () => {
   const { theme, setTheme } = useTheme()
+  const { pathname } = useLocation()
+
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarContent>
@@ -49,16 +53,28 @@ const AppSidebar = () => {
             <CollapsibleContent>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
-                        <a href={item.url}>
-                          <item.icon />
-                          <span className="group-data-[collapsible=icon]:hidden">{item.title}</span>
-                        </a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                  {items.map((item) => {
+                    const isRoute = !item.url.startsWith("#")
+                    const isActive = isRoute && (item.url === "/" ? pathname === "/" : pathname.startsWith(item.url))
+
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton asChild isActive={isActive}>
+                          {isRoute ? (
+                            <Link to={item.url}>
+                              <item.icon />
+                              <span className="group-data-[collapsible=icon]:hidden">{item.title}</span>
+                            </Link>
+                          ) : (
+                            <a href={item.url}>
+                              <item.icon />
+                              <span className="group-data-[collapsible=icon]:hidden">{item.title}</span>
+                            </a>
+                          )}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    )
+                  })}
                 </SidebarMenu>
               </SidebarGroupContent>
             </CollapsibleContent>
@@ -104,19 +120,19 @@ const AppSidebar = () => {
           {/* Dark mode switch */}
           <div className="flex items-center gap-3 py-2">
             <span className="text-sm">Dark Mode</span>
-            <label className="inline-flex items-center cursor-pointer ml-auto">
+            <label className="ml-auto inline-flex cursor-pointer items-center">
               <input type="checkbox" checked={theme === "dark"} onChange={(e) => setTheme(e.target.checked ? "dark" : "light")} className="sr-only" />
-              <div className={`w-10 h-6 rounded-full p-1 flex items-center transition-colors ${theme === "dark" ? "bg-slate-600" : "bg-slate-300"}`}>
+              <div className={`flex h-6 w-10 items-center rounded-full p-1 transition-colors ${theme === "dark" ? "bg-slate-600" : "bg-slate-300"}`}>
                 <div
                   className={`
-                    w-4 h-4 bg-white rounded-full shadow-md transform transition-transform
+                    h-4 w-4 rounded-full bg-white shadow-md transition-transform
                     ${theme === "dark" ? "translate-x-4" : ""}
                   `}
                 />
               </div>
             </label>
           </div>
-          {/* Existing DropdownMenu and other footer content */}
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
@@ -129,28 +145,27 @@ const AppSidebar = () => {
                 "
                 aria-label="Open user menu"
               >
-                {/* Left content */}
-                <div className="flex items-center gap-3 min-w-0 group-data-[collapsible=icon]:gap-0">
+                <div className="flex min-w-0 items-center gap-3 group-data-[collapsible=icon]:gap-0">
                   <img
                     src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=64&q=80&auto=format&fit=crop"
                     alt="John Doe avatar"
                     className="
-                    h-10 w-10 rounded-full object-cover shrink-0 
+                    h-10 w-10 shrink-0 rounded-full object-cover 
+                    group-data-[collapsible=icon]:mx-auto
                     group-data-[collapsible=icon]:h-8 
                     group-data-[collapsible=icon]:w-8
-                    group-data-[collapsible=icon]:mx-auto
                     "
                   />
 
                   <div className="min-w-0 group-data-[collapsible=icon]:hidden">
                     <div className="text-sm font-medium leading-none">John Doe</div>
-                    <div className="text-xs text-muted-foreground mt-0.5 truncate">john.doe@example.com</div>
+                    <div className="mt-0.5 truncate text-xs text-muted-foreground">john.doe@example.com</div>
                   </div>
                 </div>
 
                 <ChevronsUpDown
                   className="
-                    h-4 w-4 text-muted-foreground shrink-0
+                    h-4 w-4 shrink-0 text-muted-foreground
                     group-data-[collapsible=icon]:hidden
                   "
                   aria-hidden="true"
@@ -158,7 +173,7 @@ const AppSidebar = () => {
               </button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent side="right" align="start" sideOffset={8} className="w-64 mb-2">
+            <DropdownMenuContent side="right" align="start" sideOffset={8} className="mb-2 w-64">
               <DropdownMenuLabel className="flex items-center gap-3">
                 <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=64&q=80&auto=format&fit=crop" alt="User avatar" className="h-9 w-9 rounded-full object-cover" />
                 <div className="grid">
