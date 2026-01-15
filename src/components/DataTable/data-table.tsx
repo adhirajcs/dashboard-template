@@ -25,6 +25,8 @@ const COLUMN_WIDTHS: Record<string, number> = {
   createdAt: 140,
 }
 
+const minTableWidth = Object.values(COLUMN_WIDTHS).reduce((sum, w) => sum + w, 0)
+
 export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const table = useReactTable({
@@ -46,47 +48,51 @@ export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">
-      <ScrollArea className="h-full flex-1 min-h-0 rounded-md border border-border">
-        <div className="p-2">
-          <Table className="table-fixed">
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      style={COLUMN_WIDTHS[header.column.id] ? { width: COLUMN_WIDTHS[header.column.id] } : undefined}
-                      className={cn("sticky top-0 z-10 bg-background", header.column.id === "email" && "pr-4")}
-                    >
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
+      <div className="flex-1 min-h-0 overflow-x-auto">
+        <div style={{ minWidth: minTableWidth }} className="h-full">
+          <ScrollArea className="h-full min-h-0 rounded-md border border-border">
+            <div className="p-2">
+              <Table className="table-fixed">
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead
+                          key={header.id}
+                          style={COLUMN_WIDTHS[header.column.id] ? { width: COLUMN_WIDTHS[header.column.id] } : undefined}
+                          className={cn("sticky top-0 z-10 bg-background", header.column.id === "email" && "pr-4")}
+                        >
+                          {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                        </TableHead>
+                      ))}
+                    </TableRow>
                   ))}
-                </TableRow>
-              ))}
-            </TableHeader>
+                </TableHeader>
 
-            <TableBody>
-              {table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} style={COLUMN_WIDTHS[cell.column.id] ? { width: COLUMN_WIDTHS[cell.column.id] } : undefined} className="max-w-0 truncate">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                <TableBody>
+                  {table.getRowModel().rows.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id} style={COLUMN_WIDTHS[cell.column.id] ? { width: COLUMN_WIDTHS[cell.column.id] } : undefined} className="max-w-0 truncate">
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={columns.length} className="h-24 text-center text-sm text-muted-foreground">
+                        No results.
                       </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center text-sm text-muted-foreground">
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </ScrollArea>
         </div>
-      </ScrollArea>
+      </div>
 
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
