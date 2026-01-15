@@ -77,7 +77,7 @@ export function OverviewTab({ metricsLoading }: Props) {
 
       {/* Chart and Recent Sales */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+        <Card className="lg:col-span-4">
           <CardHeader>
             <CardTitle>Revenue Overview</CardTitle>
             <CardDescription>Weekly revenue and sales performance</CardDescription>
@@ -97,7 +97,7 @@ export function OverviewTab({ metricsLoading }: Props) {
           </CardContent>
         </Card>
 
-        <Card className="col-span-3">
+        <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
             <CardDescription>You made 265 sales this month.</CardDescription>

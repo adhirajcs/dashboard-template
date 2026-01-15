@@ -54,7 +54,16 @@ export function AnalyticsTab() {
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <Calendar mode="range" selected={dateRange} onSelect={handleDateChange} numberOfMonths={1} className="rounded-md" />
+              <Calendar
+                mode="range"
+                selected={dateRange}
+                onSelect={handleDateChange}
+                numberOfMonths={1}
+                className="w-full rounded-md sm:w-auto"
+                classNames={{
+                  root: "w-full sm:w-fit",
+                }}
+              />
 
               <div className="w-full rounded-md bg-muted/30 p-3 sm:max-w-[260px]">
                 <div className="grid grid-cols-2 gap-2">
