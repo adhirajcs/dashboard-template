@@ -12,8 +12,8 @@ export function NotificationsTab() {
     <div className="space-y-4">
       <div className="space-y-2">
         {notifications.map((notif) => (
-          <Card key={notif.id} className="cursor-pointer transition-colors hover:bg-accent/50">
-            <CardContent className="pt-6">
+          <Card key={notif.id} className="py-0 cursor-pointer transition-colors hover:bg-accent/80">
+            <CardContent className="py-3.5">
               <div className="flex items-start justify-between">
                 <div>
                   <h4 className="font-semibold">{notif.title}</h4>
