@@ -25,50 +25,53 @@ export function ReportsTab() {
         </Button>
       </div>
 
-      <Card>
-        <CardContent className="pt-6">
+      <Card className="py-0 overflow-hidden">
+        <CardContent className="px-0">
           {loading ? (
-            <TableSkeleton />
+            <div className="px-6 py-6">
+              <TableSkeleton />
+            </div>
           ) : (
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Product</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Sales</TableHead>
-                  <TableHead className="text-right">Revenue</TableHead>
+              <TableHeader className="bg-muted/100">
+                <TableRow className="hover:bg-muted/40">
+                  <TableHead className="h-12 px-4 text-xs font-semibold uppercase tracking-wide text-foreground">Product</TableHead>
+                  <TableHead className="h-12 px-4 text-xs font-semibold uppercase tracking-wide text-foreground">Category</TableHead>
+                  <TableHead className="h-12 px-4 text-xs font-semibold uppercase tracking-wide text-foreground">Sales</TableHead>
+                  <TableHead className="h-12 px-4 text-xs font-semibold uppercase tracking-wide text-foreground text-right">Revenue</TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
                 <TableRow>
-                  <TableCell className="font-medium">Pro Plan</TableCell>
-                  <TableCell>Subscription</TableCell>
-                  <TableCell>2,245</TableCell>
-                  <TableCell className="text-right">$89,800.00</TableCell>
+                  <TableCell className="px-4 font-medium">Pro Plan</TableCell>
+                  <TableCell className="px-4">Subscription</TableCell>
+                  <TableCell className="px-4">2,245</TableCell>
+                  <TableCell className="px-4 text-right">$89,800.00</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-medium">Starter Plan</TableCell>
-                  <TableCell>Subscription</TableCell>
-                  <TableCell>3,891</TableCell>
-                  <TableCell className="text-right">$58,365.00</TableCell>
+                  <TableCell className="px-4 font-medium">Starter Plan</TableCell>
+                  <TableCell className="px-4">Subscription</TableCell>
+                  <TableCell className="px-4">3,891</TableCell>
+                  <TableCell className="px-4 text-right">$58,365.00</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-medium">API Access</TableCell>
-                  <TableCell>Add-on</TableCell>
-                  <TableCell>1,230</TableCell>
-                  <TableCell className="text-right">$36,900.00</TableCell>
+                  <TableCell className="px-4 font-medium">API Access</TableCell>
+                  <TableCell className="px-4">Add-on</TableCell>
+                  <TableCell className="px-4">1,230</TableCell>
+                  <TableCell className="px-4 text-right">$36,900.00</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-medium">Custom Enterprise</TableCell>
-                  <TableCell>Enterprise</TableCell>
-                  <TableCell>89</TableCell>
-                  <TableCell className="text-right">$268,900.00</TableCell>
+                  <TableCell className="px-4 font-medium">Custom Enterprise</TableCell>
+                  <TableCell className="px-4">Enterprise</TableCell>
+                  <TableCell className="px-4">89</TableCell>
+                  <TableCell className="px-4 text-right">$268,900.00</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-medium">Support Plan</TableCell>
-                  <TableCell>Service</TableCell>
-                  <TableCell>567</TableCell>
-                  <TableCell className="text-right">$28,350.00</TableCell>
+                  <TableCell className="px-4 font-medium">Support Plan</TableCell>
+                  <TableCell className="px-4">Service</TableCell>
+                  <TableCell className="px-4">567</TableCell>
+                  <TableCell className="px-4 text-right">$28,350.00</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
