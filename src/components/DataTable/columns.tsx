@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 const sortableHeader =
   (label: string) =>
   ({ column }: HeaderContext<PersonRow, unknown>) => {
-    const sorted = column.getIsSorted() // false | "asc" | "desc"
+    const sorted = column.getIsSorted()
 
     return (
       <Button
@@ -17,8 +17,8 @@ const sortableHeader =
         className={cn("-ml-3 h-8 w-full justify-start px-2", sorted && "bg-accent text-accent-foreground")}
         onClick={() => {
           if (sorted === "desc")
-            column.clearSorting() // none
-          else column.toggleSorting(sorted === "asc") // none->asc, asc->desc
+            column.clearSorting()
+          else column.toggleSorting(sorted === "asc")
         }}
       >
         <span className="min-w-0 truncate">{label}</span>

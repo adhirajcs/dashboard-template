@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Spinner } from "@/components/ui/spinner"
 import { TableSkeleton } from "@/components/Dashboard/skeletons"
 
 export function ReportsTab() {
@@ -20,8 +21,12 @@ export function ReportsTab() {
           <p className="text-sm text-muted-foreground">Detailed sales data by product</p>
         </div>
         <Button onClick={handleExport} disabled={loading}>
-          {loading && <span className="mr-2">Loading...</span>}
-          Export Report
+          {loading && (
+            <span>
+              <Spinner />
+            </span>
+          )}
+          {!loading && <span>Export Report</span>}
         </Button>
       </div>
 

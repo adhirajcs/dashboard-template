@@ -4,7 +4,8 @@ import { toast } from "sonner"
 
 import AppSidebar from "@/components/AppSidebar/app-sidebar"
 import { columns } from "@/components/DataTable/columns"
-import { DataTable, DataTableSkeleton } from "@/components/DataTable/data-table"
+import { DataTable } from "@/components/DataTable/data-table"
+import { DataTableSkeleton } from "@/components/DataTable/DataTableSkeleton"
 import { AddRowSheet, type NewRowForm } from "@/components/DataTable/AddRowSheet"
 import { seedRows } from "@/components/DataTable/seed"
 import type { PersonRow } from "@/components/DataTable/types"
@@ -43,19 +44,28 @@ export default function DataTablePage() {
       return false
     }
 
-    setRows((prev) => [
-      {
-        id: crypto.randomUUID(),
-        name,
-        email,
-        role: form.role.trim() || "User",
-        status: form.status,
-        createdAt: new Date().toISOString().slice(0, 10),
-      },
-      ...prev,
-    ])
+    // Wait for sheet to close (1 second), then show skeleton
+    setTimeout(() => {
+      setLoading(true)
 
-    toast.success("Row added successfully.")
+      setTimeout(() => {
+        setRows((prev) => [
+          {
+            id: crypto.randomUUID(),
+            name,
+            email,
+            role: form.role.trim() || "User",
+            status: form.status,
+            createdAt: new Date().toISOString().slice(0, 10),
+          },
+          ...prev,
+        ])
+
+        toast.success("Row added successfully.")
+        setLoading(false)
+      }, 500)
+    }, 1000)
+
     return true
   }
 

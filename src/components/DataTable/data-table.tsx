@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 
@@ -158,18 +157,6 @@ export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div>
-    </div>
-  )
-}
-
-export function DataTableSkeleton() {
-  return (
-    <div className="flex h-full min-h-0 flex-col gap-3">
-      <Skeleton className="flex-1 w-full rounded-md border border-border" />
-      <div className="flex items-center justify-between">
-        <Skeleton className="h-4 w-32" />
-        <Skeleton className="h-8 w-64" />
       </div>
     </div>
   )
